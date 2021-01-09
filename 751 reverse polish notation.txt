@@ -1,0 +1,32 @@
+#include <iostream>
+#include <stack>
+#include <string>
+using namespace std;
+
+int main() {
+	string str;
+	while (getline(cin, str)) {
+		stack <int> stck;
+		char ch;
+		for (char ch : str) {
+			if (ch >= 48 && ch <= 57) { 
+				int c = (int)ch - 48;
+				stck.push(c);
+			}
+			else if (ch == '+' || ch == '-' || ch == '*') {
+				int op2, op1;
+				op2 = stck.top();
+				stck.pop();
+				op1 = stck.top();
+				stck.pop();
+				int ans;
+				if (ch == '+') ans = op1 + op2;
+				else if (ch == '-') ans = op1 - op2;
+				else if (ch == '*') ans = op1 * op2;
+				stck.push(ans);
+			}
+		}
+		cout << stck.top() << endl;
+	}
+	return 0;
+}

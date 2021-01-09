@@ -1,0 +1,52 @@
+#include <iostream>
+#include <queue>
+using namespace std;
+
+struct cust {
+	int A, O, L;
+};
+
+void updateTotalTime(queue <int> &list, int &totalTime, int A) {
+	while (!list.empty() && A >= totalTime + list.front()) {
+		totalTime += list.front();
+		list.pop();
+	}
+	if (list.empty()) {
+		totalTime = A;
+		return;
+	}
+	return;
+}
+
+int main() {
+	int N;
+	while (cin >> N) {
+		queue <int> list;
+		int A, O, L, totalTime = 0;
+		bool isGone = false;
+		for (int i = 0; i < N; i++) {
+			cin >> A >> O >> L;
+			cust ct = { A, O, L };
+			updateTotalTime(list, totalTime, ct.A);
+			if (ct.L >= list.size()) {
+				list.emplace(ct.O);
+			}
+			else {
+				if (i == N - 1) {
+					isGone = true;
+				}
+			}
+		}
+		if (isGone) {
+			totalTime = -1;
+		}
+		else {
+			while (list.size() > 1) {
+				totalTime += list.front();
+				list.pop();
+			}
+		}
+		cout << totalTime << endl;
+	}
+	return 0;
+}

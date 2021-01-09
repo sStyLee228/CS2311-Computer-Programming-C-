@@ -1,0 +1,64 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+	int data;
+	Node *prev, *next;
+};
+
+class List {
+public:
+	List() {
+		head = NULL;
+		tail = NULL;
+	}
+	void appendNode() {
+		Node *n = new Node;
+		n->next = NULL;
+		if (head == NULL) {
+			head = n;
+			tail = n;
+			n->data = 0;
+		}
+		else if (head->next == NULL) {
+			n->prev = head;
+			head->next = n;
+			tail = n;
+			n->data = 1;
+		}
+		else {
+			n->prev = tail;
+			n->prev->next = n;
+			tail = n;
+			n->data = (n->prev->prev->data + n->prev->data) % 10;
+		} 
+	}
+	void resetList() {
+		head = NULL;
+		tail = NULL;
+	}
+	void printLastNode() {
+		if (tail == NULL) {
+			cout << "Empty list" << endl;
+		}
+		else {
+			cout << tail->data << endl;
+		}
+	}
+private:
+	Node *head, *tail;
+};
+
+int main() {
+	List l;
+	int num;
+	while (cin >> num) {
+		for (int i = 0; i <= num; i++) {
+			l.appendNode();
+		}
+		l.printLastNode();
+		l.resetList();
+	}
+	return 0;
+}

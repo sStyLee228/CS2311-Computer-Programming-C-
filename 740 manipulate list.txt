@@ -1,0 +1,151 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+	int T;
+	Node *next;
+};
+
+class List {
+public:
+	Node *first, *next, *last, *p;
+	List() {
+		first, last = NULL;
+	}
+	void add(int t);
+	Node *search(int pos);
+	void insert(int t, int pos);
+	void deletee(int pos);
+	void reverse(int pos1, int pos2);
+	void print(int pos);
+	void printlist();
+};
+
+void List::add(int t) {
+	Node *n = new Node();
+	n->T = t;
+	if (first == NULL) {
+		first = n;
+		last = n;
+	}
+	else {
+		last->next = n;
+		last = n;
+	}
+}
+
+Node *List::search(int pos) {
+	p = first;
+	if (pos == 1) {
+		return first;
+	} 
+	else {
+		for (int i = 1; i < pos; i++) {
+			p = p->next;
+		}
+		return p;
+	}
+}
+
+void List::insert(int t, int pos) {
+	Node *n = new Node();
+	n->T = t;
+	if (first == NULL) {
+		first = n;
+		last = n;
+	}
+	else {
+		search(pos);
+		n->next = p->next;
+		p->next = n;
+	}
+}
+
+void List::deletee(int pos) {
+	if (first == NULL) {
+		return;
+	}
+	else if (pos == 1) {
+		first = first->next;
+	}
+	else {
+		search(pos-1);
+		Node *prev = p;
+		p = p->next;
+		prev->next = p->next;
+	}
+}
+
+void List::reverse(int pos1, int pos2) {
+	// need to fix this function
+	Node *tail = first;
+	Node *prev = NULL;
+	for (int i = 1; i < pos1; i++) {
+		prev = tail;
+		tail = tail->next;
+	}
+	Node *front = tail;
+	for (int i = 0; i < pos2 - pos1; i++) {
+		Node *tmp = tail->next;
+		tail->next = tail->next->next;
+		tmp->next = front;
+		front = tmp;
+		if (prev) {
+			prev->next = front;
+		}
+	}
+	Node *part1;
+	if (pos1 == 1) {
+		part1 = search(1);
+	}
+	else {
+		part1 = search(pos1 - 1);
+	}
+	Node *part2 = search(pos2 + 1);
+	part1->next = front;
+	tail->next = part2;
+}
+
+void List::print(int pos) {
+	if (first == NULL) {
+		return;
+	}
+	else {
+		search(pos);
+		cout << p->T << endl;
+	}
+}
+
+int main() {
+	int N, Q;
+	cin >> N;
+	List *l = new List();
+	for (int i = 0; i < N; i++) {
+		int t;
+		cin >> t;
+		l->add(t);
+	}
+	cin >> Q;
+	for (int j = 0; j < Q; j++) {
+		int op, pos1;
+		cin >> op >> pos1;
+		if (op == 1) {
+			int val;
+			cin >> val;
+			l->insert(val, pos1);
+		}
+		else if (op == 2) {
+			l->deletee(pos1);
+		}
+		else if (op == 3) {
+			int pos2;
+			cin >> pos2;
+			l->reverse(pos1, pos2);
+		}
+		else if (op == 4) {
+			l->print(pos1);
+		}
+	}
+	return 0;
+}

@@ -1,0 +1,43 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+int findxor(string S, int index) {
+	int size = S.size();
+	if (index == size) {
+		return 0;
+	}
+	int count = 0, open = 0, close = 0;
+	for (int i = index; i < size; i++) {
+		if (open != 0 && open == close)
+			break;
+		if (S[i] == '(') {
+			open++;
+			count++;
+		}
+		else if (S[i] == ')') {
+			close++;
+		}
+	}
+	int next = 0;
+	bool nextOpen = false;
+	for (int i = index + 1; i < size; i++) {
+		if (S[i] == '(') {
+			next = i;
+			nextOpen = true;
+			break;
+		}
+	}
+	if (!nextOpen) {
+		next = size;
+	}
+	return count ^ findxor(S, next);
+}
+
+int main() {
+	string S;
+	while (getline(cin, S)) {
+		cout << findxor(S, 0) << endl;
+	}
+	return 0;
+}

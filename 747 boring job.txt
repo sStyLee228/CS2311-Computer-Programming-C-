@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+#include <iterator>
+#include <algorithm>
+using namespace std;
+
+int main() {
+	int T, N, K, m;
+	cin >> T;
+	for (int t = 0; t < T; t++) {
+		cin >> N >> K;
+		vector <vector <int>> seq, tempseq;
+		vector <int> temp(2), max(2);
+		int index = 1;
+		for (int i = 0; i < N; i++) {
+			cin >> m;
+			seq.push_back({m, index});
+			index++;
+		}
+		int size = K;
+		for (int j = 0; j < N; j++) {
+			if (seq.size() == 1) {
+				cout << seq[0][1];
+			}
+			else {
+				if (seq.size() < K) {
+					size = seq.size();
+				}
+				for (int i = 0; i < size; i++) {
+					tempseq.push_back(seq[i]);
+				}
+				max = *max_element(tempseq.begin(), tempseq.end());
+				// to ensure we get max element with least index
+				for (int i = 0; i < tempseq.size(); i++) {
+					if (max[0] == tempseq[i][0]) {
+						max = tempseq[i];
+						break;
+					}
+				}
+				cout << max[1] << " ";
+				seq.erase(seq.begin(), seq.begin() + size);
+				for (int i = 0; i < tempseq.size(); i++) {
+					if (max != tempseq[i]) {
+						tempseq[i][0]--;
+						seq.push_back(tempseq[i]);
+					}
+				}
+				tempseq.erase(tempseq.begin(), tempseq.end());
+			}
+		}
+		cout << endl;
+	}
+	return 0;
+}

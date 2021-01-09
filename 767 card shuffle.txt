@@ -1,0 +1,43 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+	int T, I;
+	char instr1;
+	cin >> T;
+	for (int t = 0; t < T; t++) {
+		cin >> I;
+		vector <int> deck;
+		for (int i = 0; i < I; i++) {
+			cin >> instr1;
+			if (instr1 == 'I') {
+				char instr2;
+				int n;
+				cin >> instr2 >> n;
+				if (instr2 == 'H') {
+					deck.push_back(n);
+				}
+				else if (instr2 == 'B') {
+					deck.insert(deck.begin(), n);
+				}
+			}
+			else if (instr1 == 'R') {
+				char instr2;
+				cin >> instr2;
+				if (instr2 == 'H') { 
+					deck.pop_back(); 
+				}
+				else if (instr2 == 'B') {
+					deck.erase(deck.begin());
+				}
+			}
+			else if (instr1 == 'Q') {
+				int num;
+				cin >> num;
+				cout << *(deck.rbegin() + num - 1) << endl;
+			}
+		}
+	}
+	return 0;
+}

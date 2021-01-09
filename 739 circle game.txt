@@ -1,0 +1,121 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+	int T;
+	Node *next;
+};
+
+class List {
+public:
+	Node *first, *next, *last, *ref, *p;
+	int num;
+	List() {
+		first, last = NULL;
+		num = 0;
+	}
+	void add(int t);
+	void insert(int t, int pos);
+	void deletee(int pos);
+	void print(int pos);
+};
+
+void List::add(int t) {
+	Node *n = new Node();
+	n->T = t;
+	if (first == NULL) {
+		first = n;
+		last = n;
+		last->next = n;
+	}
+	else {
+		n->next = last->next;
+		last->next = n;
+		last = n;
+	}
+	ref = first;
+	num++;
+}
+
+void List::insert(int t, int pos) {
+	Node *n = new Node();
+	n->T = t;
+	p = ref;
+	if (first == NULL) {
+		first = n;
+		last = n;
+	}
+	else {
+		pos = pos % num;
+		for (int i = 1; i < pos; i++) {
+			p = p->next;
+		}
+		n->next = p->next;
+		p->next = n;
+	}
+	num++;
+	ref = n;
+}
+
+void List::deletee(int pos) {
+	p = ref;
+	if (first == NULL) {
+		return;
+	}
+	else {
+		pos = pos % num;
+		for (int i = 2; i < pos; i++) {
+			p = p->next;
+		}
+		Node *prev = p;
+		p = p->next;
+		prev->next = p->next;
+		ref = p->next;
+	}
+	num--;
+}
+
+void List::print(int pos) {
+	p = ref;
+	if (pos > num) pos = pos % num;
+	if (first == NULL) {
+		return;
+	}
+	else {
+		for (int i = 1; i < pos; i++) {
+			p = p->next;
+		}
+		cout << p->T << endl;
+	}
+	ref = p;
+}
+
+int main() {
+	int N, Q;
+	cin >> N;
+	List *l = new List();
+	for (int i = 0; i < N; i++) {
+		// initial tags
+		int t;
+		cin >> t;
+		l->add(t);
+	}
+	cin >> Q;
+	for (int j = 0; j < Q; j++) {
+		int op, pos;
+		cin >> op >> pos;
+		if (op == 1) {
+			int tag;
+			cin >> tag;
+			l->insert(tag, pos);
+		}
+		else if (op == 2) {
+			l->deletee(pos);
+		}
+		else if (op == 3) {
+			l->print(pos);
+		}
+	}
+	return 0;
+}

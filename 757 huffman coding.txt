@@ -1,0 +1,28 @@
+#include <iostream>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+int main() {
+	int N;
+	while (cin >> N) {
+		int totalLength = 0;
+		priority_queue <int, vector <int>, greater<int>> minHeap;
+		for (int i = 0; i < N; i++) {
+			int f;
+			cin >> f;
+			minHeap.push(f);
+		}		
+		while (minHeap.size() != 1) {
+			int left = minHeap.top();
+			minHeap.pop();
+			int right = minHeap.top();
+			minHeap.pop();
+			int both = left + right;
+			totalLength += both;
+			minHeap.push(both);
+		}
+		cout << totalLength << endl;
+	}
+	return 0;
+}

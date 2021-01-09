@@ -1,0 +1,44 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+int main() {
+	int T;
+	cin >> T;
+	for (int t = 0; t < T; t++) {
+		int N, M, n0;
+		cin >> N;
+		vector <int> deck;
+		for (int n = 0; n < N; n++) {
+			cin >> n0;
+			deck.push_back(n0);
+		}
+		cin >> M;
+		for (int m = 0; m < M; m++) {
+			char op;
+			cin >> op;
+			if (op == 'm') {
+				//max function
+				int max = 0;
+				for (auto i = deck.begin(); i != deck.end(); i++) {
+					max = (*i >= max) ? *i : max;
+				}
+				cout << max << endl;
+			}
+			else if (op == 'r') {
+				//remove function
+				deck.pop_back();
+			}
+			else if (op == 'a') {
+				int value;
+				cin >> value;
+				// add function
+				deck.push_back(value);
+			}
+		}
+	
+
+	}
+	return 0;
+}

@@ -1,0 +1,24 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+	short T, N;
+	cin >> T;
+	for (short t = 0; t < T; t++) {
+		cin >> N;
+		short high = 0, low = 0, prevWall, currWall;
+		cin >> prevWall;
+		for (short n = 0; n < N - 1; n++) {
+			cin >> currWall;
+			if (prevWall < currWall) {
+				high++;
+			}
+			else if (prevWall > currWall) {
+				low++;
+			}
+			prevWall = currWall;
+		}
+		cout << "Case " << t + 1 << ": " << high << " " << low << endl;
+	}
+	return 0;
+}

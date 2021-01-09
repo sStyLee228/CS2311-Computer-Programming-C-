@@ -1,0 +1,30 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+	int T;
+	cin >> T;
+	while (cin.get() != '\n');
+	while (T--) {
+		string word, ans = "";
+		getline(cin, word);
+		int curr = 0, len = word.length();
+		while (curr < len) {
+			char max = word[curr];
+			for (int i = curr + 1; i < len; i++) {
+				if (max < word[i]) max = word[i];
+			}
+			int last = curr;
+			for (int i = curr; i < len; i++) {
+				if (word[i] == max) {
+					ans += word[i];
+					last = i;
+				}
+			}
+			curr = last + 1;
+		}
+		cout << ans << endl;
+	}
+	return 0;
+}

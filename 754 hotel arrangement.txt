@@ -1,0 +1,67 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int findMax(vector <int> rooms, int N) {
+	int max = 0;
+	for (int i = 0; i < N; i++) {
+		if (max < rooms[i]) {
+			max = rooms[i];
+		}
+	}
+	return max;
+}
+
+int findMin(vector <int> rooms, int N) {
+	int min = findMax(rooms, N);
+	for (int i = 0; i < N; i++) {
+		if (min > rooms[i]) {
+			min = rooms[i];
+		}
+	}
+	return min;
+}
+
+bool isFeasible(vector <int> rooms, int middle, int C) {
+	int pos = rooms[0], taken = 1;
+	for (int i = 0; i < rooms.size(); i++) {
+		if (rooms[i] - pos >= middle) {
+			pos = rooms[i];
+			taken++;
+		}
+	}
+	return taken >= C;
+}
+
+int findDistance(vector <int> rooms, int C) {
+	sort(rooms.begin(), rooms.end());
+	int distance = -1, low = 1, high = rooms[rooms.size() - 1];
+	while (low < high) {
+		int middle = (high + low) / 2;
+		if (isFeasible(rooms, middle, C)) {
+			distance = distance > middle ? distance : middle;
+			low = middle + 1;
+		}
+		else {
+			high = middle;
+		}
+	}
+	return distance;
+}
+
+int main() {
+	int T, N, C;
+	cin >> T;
+	while (T--) {
+		cin >> N >> C;
+		vector <int> rooms;
+		for (int n = 0; n < N; n++) {
+			int num;
+			cin >> num;
+			rooms.push_back(num);
+		}
+		cout << findDistance(rooms, C) << endl;
+	}
+	return 0;
+}

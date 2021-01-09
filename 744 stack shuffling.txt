@@ -1,0 +1,47 @@
+#include <iostream>
+#include <stack>
+using namespace std;
+
+bool isPermutation(stack <int> i, stack<int> o) {
+	stack <int> stck;
+	while (!i.empty()) {
+		int temp1 = i.top();
+		stck.push(temp1);
+		i.pop();
+		while (stck.size() && stck.top() == o.top()) {
+			stck.pop();
+			o.pop();
+		}
+	}
+	return (i.empty() && stck.empty());
+}
+
+int main() {
+	int T, N, M, inp, outp[3333];
+	cin >> T;
+	while (T--) {
+		cin >> N;
+		stack <int> input;
+		for (int n = 0; n < N; n++) {
+			cin >> inp;
+			input.push(inp);
+		}
+		cin >> M;
+		while (M--) {
+			stack <int> output;
+			for (int n = 0; n < N; n++) {
+				cin >> outp[n];
+			}
+			for (int n = N - 1; n >= 0; n--) {
+				output.push(outp[n]);
+			}
+			if (isPermutation(input, output)) {
+				cout << "Aye" << endl;
+			}
+			else {
+				cout << "Impossible" << endl;
+			}
+		}
+	}
+	return 0;
+}

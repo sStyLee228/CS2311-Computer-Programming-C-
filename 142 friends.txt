@@ -1,0 +1,50 @@
+#include <iostream>
+using namespace std;
+
+int find(int num, int frd[]);
+
+void merge(int x, int y, int frd[], int relations[]) {
+	int a = find(x, frd), b = find(y, frd);
+	if (a != b) {
+		if (relations[a] > relations[b]) {
+			relations[a] += relations[b];
+			frd[b] = a;
+		}
+		else {
+			relations[b] += relations[a];
+			frd[a] = b;
+		}
+	}
+}
+
+int main() {
+	int T, N, M, numPeople = 1;
+	cin >> T;
+	while (T--) {
+		cin >> N >> M;
+		int friends[30002], relations[30002];
+		for (int i = 1; i <= N; i++) {
+			friends[i] = i;
+			relations[i] = 1;
+		}
+		for (int i = 0; i < M; i++) {
+			int A, B;
+			cin >> A >> B;
+			merge(A, B, friends, relations);
+		}
+		for (int i = 1; i <= N; i++) {
+			if (relations[i] > numPeople) {
+				numPeople = relations[i];
+			}
+		}
+		cout << numPeople << endl;
+	}
+	return 0;
+}
+
+int find(int num, int frd[]) {
+	while (num != frd[num]) {
+		num = frd[num];
+	}
+	return num;
+}

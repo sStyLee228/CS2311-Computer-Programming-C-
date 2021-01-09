@@ -1,0 +1,73 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+int N, M, ans = 0, grid[101][11] = {};
+
+void updateRow(int grid[][11], int N, int M) {
+	int currentMax = 0;
+	for (int r = 0; r < N; r++) {
+		int count = 0;
+		for (int c = 0; c < M; c++) {
+			count += grid[r][c];
+		}
+		if (M / 2 <= count) {
+			currentMax += count;
+		}
+		else
+			currentMax += M - count;
+
+	}
+	if (ans < currentMax)
+		ans = currentMax;
+}
+
+void find(int s, int grid[][11], int N, int M) {
+
+	for (int i = 0; i < N; i++)
+		grid[i][s] ^= 1;
+	updateRow(grid, N, M);
+	for (int i = s + 1; i < M; i++)
+		find(i, grid, N, M);
+}
+
+void findAllCombinations(int arr[], int i, int grid[][11], int N, int M) {
+	if (i == M) {
+		for (int c = 0; c < M; c++) {
+			if (grid[0][c] != arr[c]) {
+				for (int j = 0; j < N; j++) {
+					grid[j][c] = grid[j][c] ^ 1;
+				}
+			}
+		}
+		updateRow(grid, N, M);
+		return;
+	}
+
+	arr[i] = 0;
+	findAllCombinations(arr, i + 1, grid, N, M);
+
+	arr[i] = 1;
+	findAllCombinations(arr, i + 1, grid, N, M);
+}
+
+int main() {
+	string temp;
+	while (cin >> N >> M) {
+		if (N == 0 && M == 0)
+			break;
+		for (int r = 0; r < N; r++) {
+			cin >> temp;
+			for (int c = 0; c < M; c++) {
+				int num = temp[c] - 48;
+				grid[r][c] = num;
+			}
+		}
+		for (int k = 0; k < M; k++) {
+			find(k, grid, N, M);
+		}
+		cout << ans << endl;
+		ans = 0;
+	}
+	return 0;
+}

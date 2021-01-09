@@ -1,0 +1,82 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+
+using namespace std;
+
+struct Task {
+	int aTime;
+	int procLength;
+	int priority;
+	Task(int t, int l, int p) {
+		aTime = t;
+		procLength = l;
+		priority = p;
+	}
+};
+
+int main() {
+	int N;
+	queue<Task> low, high;
+	while (cin >> N) {
+		int finalTimes[100], time = 0;
+		for (int i = 0; i < N; i++) {
+			int R, W, P;
+			cin >> R >> W >> P;
+			if (P == 1) {
+				low.push(Task(R, W, i));
+			}
+			else if (P == 0) {
+				high.push(Task(R, W, i));
+			}
+		}
+		while (!low.empty()) {
+			Task lowTask = low.front();
+			Task highTask(-1, -1, -1);
+			if (!high.empty()) {
+				highTask = high.front();
+			}
+			else {
+				while (!low.empty()) {
+					Task l = low.front();
+					if (time < l.aTime) {
+						time = l.aTime;
+					}
+					time += l.procLength;
+					finalTimes[l.priority] = time;
+					low.pop();
+				}
+				break;
+			}
+			if (highTask.aTime <= lowTask.aTime || highTask.aTime <= time) {
+				if (time < highTask.aTime) time = highTask.aTime;
+				time += highTask.procLength;
+				finalTimes[highTask.priority] = time;
+				high.pop();
+			}
+			else {
+				if (time < lowTask.aTime) time = lowTask.aTime;
+				time += lowTask.procLength;
+				finalTimes[lowTask.priority] = time;
+				low.pop();
+			}
+		}
+		while (!high.empty()) {
+			Task highTask2 = high.front();
+			if (time < highTask2.aTime) time = highTask2.aTime;
+			time += highTask2.procLength;
+			finalTimes[highTask2.priority] = time;
+			high.pop();
+		}
+		for (int i = 0; i < N; i++) {
+			if (i != N - 1) {
+				cout << finalTimes[i] << " ";
+			}
+			else if (i == N - 1) {
+				cout << finalTimes[i];
+			}
+		}
+		cout << endl;
+	}
+	return 0;
+}

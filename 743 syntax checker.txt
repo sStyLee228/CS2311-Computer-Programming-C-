@@ -1,0 +1,56 @@
+#include <iostream>
+#include <stack>
+#include <string>
+#include <vector>
+using namespace std;
+
+struct symbol {
+	int index;
+	char ch;
+};
+
+int main() {
+	string str;
+	while (getline(cin, str)) {
+		bool closeFlag = false;
+		stack <symbol> stck;
+		int ans = 0, index = 1;
+		for (int i = 0; i < str.length(); i++) {
+			symbol s = { index, str[i] };
+			if (s.ch == '(' || s.ch == '{' || s.ch == '[')
+				stck.push(s);
+			else if (s.ch == ')' || s.ch == '}' || s.ch == ']') {
+				if (stck.empty()) {
+					cout << s.index << endl;
+					closeFlag = true;
+					break;
+				}
+				char temp = stck.top().ch;
+				if ((s.ch == ')' && temp != '(') || (s.ch == ']' && temp != '[') || (s.ch == '}' && temp != '{')) {
+					cout << s.index << endl;
+					closeFlag = true;
+					break;
+				}
+				else if (((s.ch == ')' && temp == '(') || (s.ch == ']' && temp == '[') || (s.ch == '}' && temp == '{'))) {
+					// temp with corresponding pair are popped out, meaning this pair of brackets is gone
+					stck.pop();
+				}
+			}
+			index++;
+		}
+		if (!closeFlag) {
+			if (stck.empty()) {
+				cout << "Success" << endl;
+			}
+			else {
+				symbol ans;
+				while (!stck.empty()) {
+					ans = stck.top();
+					stck.pop();
+				}
+				cout << ans.index << endl;
+			}
+		}
+	}
+	return 0;
+}
